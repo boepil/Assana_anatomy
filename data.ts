@@ -1,0 +1,356 @@
+import { Asana, RegionOverride } from './types';
+
+export const TERM_DEFINITIONS: Record<string, string> = {
+  shoulder: "Shoulder ball-and-socket joint.",
+  scapular: "Scapula movement relative to ribcage.",
+  elbow: "Humeroulnar joint at the arm.",
+  wrist: "Radiocarpal joint of the hand.",
+  spine: "Vertebral column from cervical to lumbar.",
+  cervical: "Neck region of the spine (C1-C7).",
+  thoracic: "Mid-back region of the spine (T1-T12).",
+  lumbar: "Lower back region of the spine (L1-L5).",
+  thoracolumbar: "Transition area between thoracic and lumbar spine.",
+  pelvis: "Bony structure formed by hip bones and sacrum.",
+  sacrum: "Triangular bone at base of spine, part of pelvis.",
+  core: "Muscles of the abdomen and lower back.",
+  hip: "Ball-and-socket joint where femur head articulates with acetabulum.",
+  knee: "Hinge joint between femur and tibia.",
+  ankle: "Hinge joint between tibia/fibula and talus.",
+  flexion: "Angle decreases; limb moves forward/up.",
+  extension: "Angle increases; limb moves backward/down.",
+  abduction: "Limb moves away from midline.",
+  adduction: "Limb moves toward midline.",
+  "lateral flexion": "Spine bends side-to-side.",
+  "axial rotation": "Spine rotates around vertical axis.",
+  "anterior tilt": "Pelvis tilts forward; ASIS moves down.",
+  "posterior tilt": "Pelvis tilts back; ASIS moves up.",
+  inversion: "Foot tilts toward midline.",
+  eversion: "Foot tilts away from midline.",
+  plantarflexion: "Foot points down at ankle.",
+  dorsiflexion: "Foot bends up at ankle.",
+  "horizontal abduction": "Arm opens across transverse plane.",
+  "horizontal adduction": "Arm crosses midline in transverse plane.",
+  protraction: "Scapula glides around ribs forward.",
+  retraction: "Scapula draws toward spine.",
+  elevation: "Scapula lifts upward.",
+  depression: "Scapula presses downward.",
+  "upward rotation": "Scapula rotates to tip glenoid up.",
+  "downward rotation": "Scapula rotates to tip glenoid down.",
+  pronated: "Forearm rotated palm-down.",
+  supinated: "Forearm rotated palm-up.",
+  dorsiflexed: "Wrist/Ankle extends backward/upward.",
+  plantarflexed: "Wrist/Ankle flexes forward/downward.",
+  neutral: "Natural, mid-range position.",
+  "ulnar deviated": "Wrist tilts toward ulna.",
+  engaged: "Muscles are actively contracted.",
+  relaxed: "Muscles are in a state of minimal tension.",
+  protected: "Joint is positioned safely to avoid strain.",
+  long: "Spine is extended to its natural length.",
+  hyperextension: "Excessive extension beyond normal range.",
+};
+
+export const REGION_OVERRIDES: Record<string, RegionOverride> = {
+  downward_dog: {
+    trunk: [
+      { id: "A", text: "Spine neutral to slight axial extension; pelvis in anterior tilt.", correct: true },
+      { id: "B", text: "Thoracolumbar flexion with posterior pelvic tilt.", correct: false },
+      { id: "C", text: "Marked axial rotation of the spine to the right.", correct: false },
+      { id: "D", text: "Pronounced lateral flexion of the lumbar spine.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips flexed, knees extended, ankles dorsiflexed.", correct: true },
+      { id: "B", text: "Hips extended, knees flexed, ankles plantarflexed.", correct: false },
+      { id: "C", text: "Hips abducted, knees flexed, ankles inverted.", correct: false },
+      { id: "D", text: "Hips adducted, knees extended, ankles everted.", correct: false },
+    ],
+  },
+  mountain_pose: {
+    trunk: [
+      { id: "A", text: "Spine neutral; pelvis neutral.", correct: true },
+      { id: "B", text: "Thoracic hyperextension; pelvis posterior tilt.", correct: false },
+      { id: "C", text: "Lumbar flexion; pelvis anterior tilt.", correct: false },
+      { id: "D", text: "Axial rotation of the spine to the left.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips neutral, knees extended, ankles neutral.", correct: true },
+      { id: "B", text: "Hips flexed, knees flexed, ankles dorsiflexed.", correct: false },
+      { id: "C", text: "Hips abducted, knees extended, ankles everted.", correct: false },
+      { id: "D", text: "Hips extended, knees flexed, ankles plantarflexed.", correct: false },
+    ],
+  },
+  chair_pose: {
+    trunk: [
+      { id: "A", text: "Trunk slight flexion; spine long; pelvis anterior tilt.", correct: true },
+      { id: "B", text: "Thoracic extension; posterior pelvic tilt.", correct: false },
+      { id: "C", text: "Axial rotation right; lateral flexion left.", correct: false },
+      { id: "D", text: "Lumbar hyperextension; excessive anterior pelvic tilt.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips flexed, knees flexed, ankles dorsiflexed.", correct: true },
+      { id: "B", text: "Hips extended, knees extended, ankles plantarflexed.", correct: false },
+      { id: "C", text: "Hips abducted, knees extended, ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted, knees flexed, ankles inverted.", correct: false },
+    ],
+  },
+  shoulderstand: {
+    trunk: [
+      { id: "A", text: "Cervical spine protected; thoracic spine extended; core engaged.", correct: true },
+      { id: "B", text: "Cervical hyperextension; lumbar spine flexed; core relaxed.", correct: false },
+      { id: "C", text: "Axial rotation of the spine; lateral flexion right.", correct: false },
+      { id: "D", text: "Thoracic flexion; excessive anterior pelvic tilt.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips extended; knees extended; ankles dorsiflexed.", correct: true },
+      { id: "B", text: "Hips flexed; knees flexed; ankles plantarflexed.", correct: false },
+      { id: "C", text: "Hips abducted; knees extended; ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted; knees flexed; ankles inverted.", correct: false },
+    ],
+  },
+  plank_pose: {
+    trunk: [
+      { id: "A", text: "Spine neutral; core engaged; pelvis neutral.", correct: true },
+      { id: "B", text: "Lumbar hyperextension; core relaxed; anterior pelvic tilt.", correct: false },
+      { id: "C", text: "Thoracic flexion; core weak; posterior pelvic tilt.", correct: false },
+      { id: "D", text: "Axial rotation; lateral flexion; pelvis tilted right.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips extended; knees extended; ankles dorsiflexed.", correct: true },
+      { id: "B", text: "Hips flexed; knees flexed; ankles plantarflexed.", correct: false },
+      { id: "C", text: "Hips abducted; knees extended; ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted; knees flexed; ankles inverted.", correct: false },
+    ],
+  },
+  chaturanga: {
+    trunk: [
+      { id: "A", text: "Spine neutral; core engaged; controlled descent.", correct: true },
+      { id: "B", text: "Lumbar collapse; core weak; uncontrolled drop.", correct: false },
+      { id: "C", text: "Thoracic hyperextension; core over-engaged; rigid spine.", correct: false },
+      { id: "D", text: "Axial rotation; lateral flexion; uneven descent.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips extended; knees extended; ankles dorsiflexed.", correct: true },
+      { id: "B", text: "Hips flexed; knees flexed; ankles plantarflexed.", correct: false },
+      { id: "C", text: "Hips abducted; knees extended; ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted; knees flexed; ankles inverted.", correct: false },
+    ],
+  },
+  cobra_pose: {
+    trunk: [
+      { id: "A", text: "Thoracic extension; lumbar protected; core engaged.", correct: true },
+      { id: "B", text: "Lumbar hyperextension; thoracic flexed; core relaxed.", correct: false },
+      { id: "C", text: "Axial rotation; lateral flexion; uneven extension.", correct: false },
+      { id: "D", text: "Cervical hyperextension; spine collapsed; weak core.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips extended; knees extended; ankles dorsiflexed.", correct: true },
+      { id: "B", text: "Hips flexed; knees flexed; ankles plantarflexed.", correct: false },
+      { id: "C", text: "Hips abducted; knees extended; ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted; knees flexed; ankles inverted.", correct: false },
+    ],
+  },
+  upward_salute: {
+    trunk: [
+      { id: "A", text: "Spine extended; core engaged; pelvis neutral.", correct: true },
+      { id: "B", text: "Lumbar hyperextension; core relaxed; anterior pelvic tilt.", correct: false },
+      { id: "C", text: "Thoracic flexion; core weak; posterior pelvic tilt.", correct: false },
+      { id: "D", text: "Axial rotation; lateral flexion; pelvis tilted left.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips neutral; knees extended; ankles neutral.", correct: true },
+      { id: "B", text: "Hips flexed; knees flexed; ankles dorsiflexed.", correct: false },
+      { id: "C", text: "Hips abducted; knees extended; ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted; knees flexed; ankles inverted.", correct: false },
+    ],
+  },
+  warrior_ii: {
+    trunk: [
+      { id: "A", text: "Spine neutral; core engaged; pelvis facing forward.", correct: true },
+      { id: "B", text: "Lumbar rotation; core weak; pelvis rotated right.", correct: false },
+      { id: "C", text: "Thoracic flexion; core relaxed; anterior pelvic tilt.", correct: false },
+      { id: "D", text: "Axial rotation; lateral flexion; pelvis tilted.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Front hip flexed; back hip extended; knees aligned; ankles stable.", correct: true },
+      { id: "B", text: "Hips neutral; knees extended; ankles dorsiflexed.", correct: false },
+      { id: "C", text: "Hips abducted; knees flexed; ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted; knees extended; ankles inverted.", correct: false },
+    ],
+  },
+  locust_pose: {
+    trunk: [
+      { id: "A", text: "Thoracic extension; lumbar protected; core engaged.", correct: true },
+      { id: "B", text: "Lumbar hyperextension; thoracic flexed; core relaxed.", correct: false },
+      { id: "C", text: "Axial rotation; lateral flexion; uneven extension.", correct: false },
+      { id: "D", text: "Cervical hyperextension; spine collapsed; weak core.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips extended; knees extended; ankles dorsiflexed.", correct: true },
+      { id: "B", text: "Hips flexed; knees flexed; ankles plantarflexed.", correct: false },
+      { id: "C", text: "Hips abducted; knees extended; ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted; knees flexed; ankles inverted.", correct: false },
+    ],
+  },
+  headstand: {
+    trunk: [
+      { id: "A", text: "Cervical spine protected; thoracic extended; core engaged.", correct: true },
+      { id: "B", text: "Cervical hyperextension; thoracic flexed; core relaxed.", correct: false },
+      { id: "C", text: "Axial rotation; lateral flexion; uneven alignment.", correct: false },
+      { id: "D", text: "Lumbar hyperextension; spine collapsed; weak core.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips extended; knees extended; ankles dorsiflexed.", correct: true },
+      { id: "B", text: "Hips flexed; knees flexed; ankles plantarflexed.", correct: false },
+      { id: "C", text: "Hips abducted; knees extended; ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted; knees flexed; ankles inverted.", correct: false },
+    ],
+  },
+  bow_pose: {
+    trunk: [
+      { id: "A", text: "Thoracic extension; lumbar protected; core engaged.", correct: true },
+      { id: "B", text: "Lumbar hyperextension; thoracic flexed; core relaxed.", correct: false },
+      { id: "C", text: "Axial rotation; lateral flexion; uneven extension.", correct: false },
+      { id: "D", text: "Cervical hyperextension; spine collapsed; weak core.", correct: false },
+    ],
+    lower: [
+      { id: "A", text: "Hips extended; knees flexed; ankles dorsiflexed.", correct: true },
+      { id: "B", text: "Hips flexed; knees extended; ankles plantarflexed.", correct: false },
+      { id: "C", text: "Hips abducted; knees flexed; ankles everted.", correct: false },
+      { id: "D", text: "Hips adducted; knees extended; ankles inverted.", correct: false },
+    ],
+  },
+};
+
+export const ASANA_DATA: Asana[] = [
+  {
+    id: "downward_dog",
+    name: "Adho Mukha Svanasana (Downward Facing Dog)",
+    aliases: ["downward dog", "adho mukha"],
+    quizOptions: [
+      { id: "A", text: "Shoulder flexion to ~120°, scapular protraction and upward rotation, elbows extended, wrists dorsiflexed.", correct: true },
+      { id: "B", text: "Shoulder extension, scapular retraction and downward rotation, elbows extended, wrists dorsiflexed.", correct: false },
+      { id: "C", text: "Shoulder abduction, scapular elevation, elbows flexed, wrists in neutral.", correct: false },
+      { id: "D", text: "Shoulder flexion, scapular protraction, elbows flexed, wrists ulnar deviated.", correct: false },
+    ],
+  },
+  {
+    id: "mountain_pose",
+    name: "Tadasana (Mountain Pose)",
+    aliases: ["mountain pose", "tadasana"],
+    quizOptions: [
+      { id: "A", text: "Shoulder neutral, scapulae neutral (slight retraction), elbows extended, wrists neutral.", correct: true },
+      { id: "B", text: "Shoulder abduction 90°, scapular elevation, elbows extended, wrists dorsiflexed.", correct: false },
+      { id: "C", text: "Shoulder extension, scapular depression, elbows flexed, wrists neutral.", correct: false },
+      { id: "D", text: "Shoulder flexion, scapular upward rotation, elbows extended, wrists dorsiflexed.", correct: false },
+    ],
+  },
+  {
+    id: "upward_salute",
+    name: "Urdhva Hastasana (Upward Salute)",
+    aliases: ["upward salute", "urdhva hastasana"],
+    quizOptions: [
+      { id: "A", text: "Shoulder full flexion, scapular upward rotation and slight elevation, elbows extended, wrists neutral or slight extension.", correct: true },
+      { id: "B", text: "Shoulder horizontal abduction, scapular retraction, elbows flexed, wrists neutral.", correct: false },
+      { id: "C", text: "Shoulder extension, scapular depression, elbows extended, wrists ulnar deviated.", correct: false },
+      { id: "D", text: "Shoulder horizontal abduction, scapular retraction, elbows flexed, wrists dorsiflexed.", correct: false },
+    ],
+  },
+  {
+    id: "warrior_ii",
+    name: "Virabhadrasana II (Warrior II)",
+    aliases: ["warrior 2", "virabhadrasana ii"],
+    quizOptions: [
+      { id: "A", text: "Lead arm: Shoulder abduction ~90°, scapular upward rotation, elbow extended, wrist neutral.", correct: true },
+      { id: "B", text: "Lead arm: Shoulder flexion, scapular protraction, elbow extended.", correct: false },
+      { id: "C", text: "Lead arm: Shoulder adduction, scapular downward rotation, elbow flexed.", correct: false },
+      { id: "D", text: "Lead arm: Shoulder horizontal adduction, scapular protraction, elbow flexed.", correct: false },
+    ],
+  },
+  {
+    id: "chair_pose",
+    name: "Utkatasana (Chair Pose)",
+    aliases: ["chair pose", "utkatasana"],
+    quizOptions: [
+      { id: "A", text: "Shoulder flexion to ~90°, scapular upward rotation, elbows extended, wrists neutral.", correct: true },
+      { id: "B", text: "Shoulder horizontal abduction, scapular retraction, elbows extended, wrists dorsiflexed.", correct: false },
+      { id: "C", text: "Shoulder extension, scapular depression, elbows flexed, wrists neutral.", correct: false },
+      { id: "D", text: "Shoulder horizontal abduction, scapular retraction, elbows extended, wrists pronated.", correct: false },
+    ],
+  },
+  {
+    id: "plank_pose",
+    name: "Phalakasana (Plank Pose)",
+    aliases: ["plank", "phalakasana"],
+    quizOptions: [
+      { id: "A", text: "Shoulder flexion ~90°, scapular protraction, elbows extended, wrists dorsiflexed.", correct: true },
+      { id: "B", text: "Shoulder extension, scapular retraction, elbows flexed, wrists neutral.", correct: false },
+      { id: "C", text: "Shoulder abduction, scapular upward rotation, elbows extended, wrists dorsiflexed.", correct: false },
+      { id: "D", text: "Shoulder horizontal abduction, scapular depression, elbows flexed, wrists ulnar deviated.", correct: false },
+    ],
+  },
+  {
+    id: "chaturanga",
+    name: "Chaturanga Dandasana (Four-Limbed Staff Pose)",
+    aliases: ["chaturanga", "low plank"],
+    quizOptions: [
+      { id: "A", text: "Shoulder extension from flexed position, scapular retraction, elbows flexed ~90°, wrists dorsiflexed.", correct: true },
+      { id: "B", text: "Shoulder flexion, scapular protraction, elbows extended, wrists dorsiflexed.", correct: false },
+      { id: "C", text: "Shoulder horizontal abduction, scapular retraction, elbows flexed 45°, wrists in neutral.", correct: false },
+      { id: "D", text: "Shoulder extension, scapular depression, elbows extended, wrists dorsiflexed.", correct: false },
+    ],
+  },
+  {
+    id: "cobra_pose",
+    name: "Bhujangasana (Cobra Pose)",
+    aliases: ["cobra pose", "bhujangasana"],
+    quizOptions: [
+      { id: "A", text: "Shoulder extension, scapular retraction and depression, elbows extended, wrists dorsiflexed.", correct: true },
+      { id: "B", text: "Shoulder flexion, scapular protraction, elbows flexed, wrists neutral.", correct: false },
+      { id: "C", text: "Shoulder abduction, scapular upward rotation, elbows extended, wrists dorsiflexed.", correct: false },
+      { id: "D", text: "Shoulder horizontal abduction, scapular depression, elbows flexed, wrists dorsiflexed.", correct: false },
+    ],
+  },
+  {
+    id: "locust_pose",
+    name: "Salabhasana (Locust Pose)",
+    aliases: ["locust pose", "salabhasana"],
+    quizOptions: [
+      { id: "A", text: "Shoulder extension, scapular retraction, elbows extended, wrists neutral.", correct: true },
+      { id: "B", text: "Shoulder flexion, scapular protraction, elbows extended, wrists dorsiflexed.", correct: false },
+      { id: "C", text: "Shoulder abduction, scapular upward rotation, elbows flexed, wrists neutral.", correct: false },
+      { id: "D", text: "Shoulder horizontal adduction, scapular protraction, elbows flexed, wrists ulnar deviated.", correct: false },
+    ],
+  },
+  {
+    id: "headstand",
+    name: "Sirsasana (Headstand)",
+    aliases: ["headstand", "sirsasana"],
+    quizOptions: [
+      { id: "A", text: "Shoulder flexion ~180°, scapular upward rotation and elevation, elbows flexed, wrists dorsiflexed.", correct: true },
+      { id: "B", text: "Shoulder extension, scapular depression, elbows flexed, wrists dorsiflexed.", correct: false },
+      { id: "C", text: "Shoulder horizontal abduction, scapular retraction, elbows extended, wrists in neutral.", correct: false },
+      { id: "D", text: "Shoulder horizontal abduction, scapular retraction, elbows extended, wrists ulnar deviated.", correct: false },
+    ],
+  },
+  {
+    id: "shoulderstand",
+    name: "Sarvangasana (Shoulderstand)",
+    aliases: ["shoulderstand", "sarvangasana"],
+    quizOptions: [
+      { id: "A", text: "Shoulder extension from flexed position, scapular downward rotation and retraction, elbows flexed, wrists in neutral.", correct: true },
+      { id: "B", text: "Shoulder flexion, scapular protraction, elbows extended, wrists dorsiflexed.", correct: false },
+      { id: "C", text: "Shoulder abduction, scapular upward rotation, elbows extended, wrists neutral.", correct: false },
+      { id: "D", text: "Shoulder extension, scapular depression, elbows extended, wrists dorsiflexed.", correct: false },
+    ],
+  },
+  {
+    id: "bow_pose",
+    name: "Dhanurasana (Bow Pose)",
+    aliases: ["bow pose", "dhanurasana"],
+    quizOptions: [
+      { id: "A", text: "Shoulder extension, scapular retraction, elbows flexed, wrists plantarflexed (holding feet).", correct: true },
+      { id: "B", text: "Shoulder flexion, scapular protraction, elbows extended, wrists dorsiflexed.", correct: false },
+      { id: "C", text: "Shoulder horizontal abduction, scapular retraction, elbows extended, wrists neutral.", correct: false },
+      { id: "D", text: "Shoulder horizontal adduction, scapular protraction, elbows flexed, wrists dorsiflexed.", correct: false },
+    ],
+  },
+];
